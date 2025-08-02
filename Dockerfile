@@ -1,7 +1,7 @@
 FROM jupyterhub/k8s-hub:3.1.0
 
-LABEL authors="Alex Egorov"
-LABEL telegram="https://t.me/ialex_ops"
+LABEL authors="Eugene Chernov"
+LABEL telegram="https://t.me/awe_eu"
 
 LABEL description="JupyterHub for Kubernetes with custom spawner"
 

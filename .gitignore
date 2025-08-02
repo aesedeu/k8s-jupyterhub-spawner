@@ -18,6 +18,7 @@ jupyterhub.sqlite
 jupyterhub_cookie_secret
 
 # Editors
+**/.DS_Store
 .vscode
 .idea
 
