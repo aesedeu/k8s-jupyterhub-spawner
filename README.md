@@ -1,5 +1,7 @@
 # Jupyter Hub
 
+Настройка spawner: https://jupyterhub.readthedocs.io/en/5.2.1/reference/api/index.html
+
 - Запускаем minikube
 - Собираем образ и пушим к себе, но тогда указываем актуальную ссылку на образ в Docker Hub:
 ```bash

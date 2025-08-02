@@ -55,6 +55,10 @@ jupyterhub:
       tag: "1.0"
       pullPolicy: Always
 
+    config:
+      JupyterHub:
+        shutdown_on_logout: true
+
     extraConfig:
       spawner_define: |    
         from k8sspawner.spawner.spawner import Customk8sSpawner
