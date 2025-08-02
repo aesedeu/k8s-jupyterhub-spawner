@@ -1,0 +1,66 @@
+jupyterhub:
+
+  proxy:
+    service:
+      type: ClusterIP
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts: [ jupyterhub.k8s.localhost ]
+    pathType: Prefix
+
+  debug:
+    enabled: true
+
+  hub:
+    extraEnv:
+      - name: LDAP_SERVER
+        value: "ldap://host.docker.internal:1389"
+      - name: LDAP_USER
+        value: "cn=admin,dc=example,dc=org"
+      - name: LDAP_PASSWORD
+        value: "adminpassword"
+      - name: LDAP_BASE_DN
+        value: "dc=example,dc=org"
+      - name: DOCKER_REGISTRY # Образ, на котором идет старт ноутбука
+        value: "jupyter/minimal-notebook"
+      # - name: DOCKER_TAG # Тег образа, на котором идет старт ноутбука
+      #   value: "x86_64-ubuntu-22.04"
+    service:
+      type: ClusterIP
+      extraPorts:
+        - name: debug
+          port: 5678
+
+    extraVolumeMounts:
+      - name: form-conf
+        mountPath: /tmp/
+    extraVolumes:
+      - name: form-conf
+        configMap:
+          name: spawner-form-conf
+          items:
+            - key: formConf.yaml
+              path: formConf.yaml
+
+
+    readinessProbe:
+      enabled: false
+    livenessProbe:
+      enabled: false
+
+    image:
+      name: aesedeu/k8s-spawner
+      tag: "1.0"
+      pullPolicy: Always
+
+    extraConfig:
+      spawner_define: |    
+        from k8sspawner.spawner.spawner import Customk8sSpawner
+        
+        c.JupyterHub.spawner_class = Customk8sSpawner
+
+    db:
+      type: sqlite-memory
+      url: sqlite:////srv/jupyterhub/jupyterhub.sqlite
